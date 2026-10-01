@@ -1,5 +1,7 @@
 import express from 'express';
 import cors from 'cors';
+import path from 'path';
+import fs from 'fs';
 import swaggerUi from 'swagger-ui-express';
 import { config } from './config';
 import { connectDB, isMongoConnected } from './db/connection';
@@ -195,8 +197,11 @@ app.get('/health', (req, res) => {
   });
 });
 
-// Root
-app.get('/', (req, res) => {
+// Mount V1 API
+app.use('/api/v1', apiRoutes);
+
+// Root API discovery endpoint
+app.get('/api', (req, res) => {
   res.json({
     message: 'Welcome to NestFit Location-Intelligence API',
     docs: '/api-docs',
@@ -210,8 +215,39 @@ app.get('/', (req, res) => {
   });
 });
 
-// Mount V1 API
-app.use('/api/v1', apiRoutes);
+// Static frontend assets & SPA client routing fallback (Render / Production)
+const possibleDistPaths = [
+  path.resolve(process.cwd(), 'frontend', 'dist'),
+  path.resolve(process.cwd(), '..', 'frontend', 'dist'),
+  path.resolve(__dirname, '../../frontend/dist')
+];
+
+const frontendDist = possibleDistPaths.find(p => fs.existsSync(path.join(p, 'index.html')));
+
+if (frontendDist) {
+  app.use(express.static(frontendDist));
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api') || req.path.startsWith('/health') || req.path.startsWith('/api-docs')) {
+      return next();
+    }
+    res.sendFile(path.join(frontendDist, 'index.html'));
+  });
+} else {
+  // Standalone API root fallback
+  app.get('/', (req, res) => {
+    res.json({
+      message: 'Welcome to NestFit Location-Intelligence API',
+      docs: '/api-docs',
+      endpoints: {
+        recommendations: '/api/v1/recommend',
+        neighborhoods: '/api/v1/neighborhoods',
+        cities: '/api/v1/meta/cities',
+        workplaces: '/api/v1/meta/workplaces',
+        factors: '/api/v1/meta/factors'
+      }
+    });
+  });
+}
 
 // Only listen if not imported by test runner
 if (process.env.NODE_ENV !== 'test') {

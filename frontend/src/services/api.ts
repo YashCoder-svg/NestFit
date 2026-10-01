@@ -1,6 +1,7 @@
 import { CityId, CityInfo, CitySearchResult, FilterState, RecommendationResponse, Workplace } from '../types';
 
-const API_BASE = '/api/v1';
+const API_BASE_HOST = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
+const API_BASE = `${API_BASE_HOST}/api/v1`;
 
 export async function fetchCities(): Promise<CityInfo[]> {
   try {

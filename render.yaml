@@ -1,0 +1,22 @@
+services:
+  # NestFit Full-Stack Web Service (Render Free Tier Compatible)
+  # Serves both the Express API and the React/Vite Single-Page Application on the same domain
+  - type: web
+    name: nestfit
+    runtime: node
+    plan: free
+    buildCommand: npm run build
+    startCommand: npm start
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: CORS_ORIGIN
+        value: "*"
+      # Optional: Provide a MongoDB Atlas connection string if you wish to persist dynamic cities to MongoDB
+      # If omitted, NestFit automatically runs with its resilient embedded multi-city data store
+      - key: MONGO_URI
+        sync: false
+      - key: OPENWEATHER_API_KEY
+        sync: false
