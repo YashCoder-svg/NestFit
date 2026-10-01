@@ -53,6 +53,48 @@ export const CityAutocomplete: React.FC<CityAutocompleteProps> = ({
     return () => clearTimeout(timer);
   }, [query, isOpen]);
 
+  // Typewriter effect rotating through example cities in hero search input
+  const [typewriterCity, setTypewriterCity] = useState('Bangalore');
+  useEffect(() => {
+    if (variant !== 'hero') return;
+
+    const cities = ['Bangalore', 'Jaipur', 'Lucknow', 'Raigarh'];
+    let cityIdx = 0;
+    let charIdx = cities[0].length;
+    let isDeleting = true;
+    let timer: ReturnType<typeof setTimeout>;
+
+    // Initial pause on the first city before starting rotation
+    timer = setTimeout(() => {
+      const step = () => {
+        const current = cities[cityIdx];
+        if (isDeleting) {
+          charIdx--;
+          setTypewriterCity(current.substring(0, charIdx));
+          if (charIdx <= 0) {
+            isDeleting = false;
+            cityIdx = (cityIdx + 1) % cities.length;
+            timer = setTimeout(step, 350);
+            return;
+          }
+          timer = setTimeout(step, 45);
+        } else {
+          charIdx++;
+          setTypewriterCity(current.substring(0, charIdx));
+          if (charIdx >= current.length) {
+            isDeleting = true;
+            timer = setTimeout(step, 2000);
+            return;
+          }
+          timer = setTimeout(step, 80);
+        }
+      };
+      step();
+    }, 1800);
+
+    return () => clearTimeout(timer);
+  }, [variant]);
+
   const handleSelect = (item: CitySearchResult) => {
     onSelectCity(item.id, item.name, item.isCached || item.isPreWarmed, item.lat, item.lon);
     setQuery('');
@@ -87,7 +129,7 @@ export const CityAutocomplete: React.FC<CityAutocompleteProps> = ({
               setQuery(e.target.value);
               setIsOpen(true);
             }}
-            placeholder="Type any Indian city name (e.g. Bangalore, Pune, Jaipur, Raigarh)..."
+            placeholder={`Search Indian city (e.g. "${typewriterCity}")...`}
             className="w-full py-3 pr-4 bg-transparent text-xs sm:text-sm text-[#E2E8F0] placeholder-[#64748B] focus:outline-none"
             aria-label="Search Indian city"
           />

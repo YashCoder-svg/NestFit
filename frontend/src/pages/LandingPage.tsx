@@ -9,20 +9,19 @@ import {
   ArrowRight,
   Sparkles,
   MapPin,
-  Clock,
-  IndianRupee,
-  Wind,
-  Hospital,
-  ShoppingBag,
   ShieldAlert,
-  Layers,
-  Building2,
-  CheckCircle2,
   Sun,
   Moon,
   ChevronRight,
   Scale
 } from 'lucide-react';
+
+const sectionMotionProps = {
+  initial: { opacity: 0, y: 22 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: '-50px' },
+  transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] }
+};
 
 export const LandingPage: React.FC = () => {
   const navigate = useNavigate();
@@ -37,7 +36,7 @@ export const LandingPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#0B1120] text-[#E2E8F0] flex flex-col font-sans overflow-x-hidden selection:bg-[#0D9488]/30 selection:text-white antialiased">
       {/* 1. Header / Navigation */}
-      <header className="sticky top-0 z-50 w-full bg-[#0B1120] border-b border-[#1F2937]">
+      <header className="sticky top-0 z-50 w-full bg-[#0B1120]/95 backdrop-blur-sm border-b border-[#1F2937]">
         <div className="max-w-[1720px] mx-auto px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-[#141B2D] border border-[#1F2937] flex items-center justify-center text-[#0D9488]">
@@ -69,93 +68,104 @@ export const LandingPage: React.FC = () => {
               {theme === 'dark' ? <Sun className="w-4 h-4 text-[#D97706]" /> : <Moon className="w-4 h-4 text-[#94A3B8]" />}
             </button>
 
-            <button
-              onClick={() => handleLaunchApp()}
-              className="px-4 py-2 rounded-lg text-xs font-medium text-white bg-[#0D9488] hover:bg-[#0F766E] transition-colors flex items-center gap-1.5"
+            {/* Differentiated secondary action: opens city select on landing page, leaving primary solid CTA for Hero */}
+            <a
+              href="#cities"
+              className="px-3.5 py-1.5 rounded-lg text-xs font-medium text-[#94A3B8] hover:text-[#E2E8F0] bg-[#141B2D] hover:bg-[#1A2332] border border-[#1F2937] transition-colors flex items-center gap-1.5"
             >
-              <span>Launch Dashboard</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
+              <MapPin className="w-3.5 h-3.5 text-[#0D9488]" />
+              <span>Select City</span>
+            </a>
           </div>
         </div>
       </header>
 
-      {/* 2. Hero Section (Clean, Quiet, High-Contrast Typography) */}
-      <section className="relative pt-20 pb-16 sm:pt-28 sm:pb-24 border-b border-[#1F2937]">
-        <div className="max-w-5xl mx-auto px-6 text-center">
-          <div className="space-y-6">
-            {/* Tag badge */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#141B2D] border border-[#1F2937] text-[#94A3B8] text-xs font-medium">
-              <Sparkles className="w-3.5 h-3.5 text-[#0D9488]" />
-              <span>Multi-Objective Non-Dominated Sorting (Deb O(MN²))</span>
-            </div>
-
-            <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight text-[#E2E8F0] leading-tight max-w-4xl mx-auto">
-              Find where you fit in a city, not just where you rent.
-            </h1>
-
-            <p className="text-base text-[#94A3B8] leading-relaxed max-w-2xl mx-auto">
-              NestFit scores neighborhoods across live commute, rent benchmarks, air quality, 
-              and healthcare density to return the mathematically non-dominated Pareto frontier — 
-              no arbitrary linear weights, no outlier concealment.
-            </p>
-
-            {/* City Autocomplete Dropdown */}
-            <div className="pt-2 max-w-md mx-auto">
-              <CityAutocomplete
-                currentCityId={selectedCity}
-                onSelectCity={(key) => handleLaunchApp(key)}
-                variant="hero"
-              />
-            </div>
-
-            {/* Action Buttons */}
-            <div className="pt-3 flex flex-col sm:flex-row items-center justify-center gap-3">
-              <button
-                onClick={() => handleLaunchApp()}
-                className="w-full sm:w-auto px-6 py-2.5 rounded-lg text-sm font-medium text-white bg-[#0D9488] hover:bg-[#0F766E] transition-colors flex items-center justify-center gap-2"
-              >
-                <span>Launch {selectedCity === 'bangalore' ? 'Bangalore' : 'Pune'} Workspace</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-
-              <a
-                href="#how-it-works"
-                className="w-full sm:w-auto px-5 py-2.5 rounded-lg text-sm font-medium text-[#94A3B8] hover:text-[#E2E8F0] bg-[#141B2D] hover:bg-[#1A2332] border border-[#1F2937] transition-colors flex items-center justify-center gap-2"
-              >
-                <span>Methodology Overview</span>
-              </a>
-            </div>
+      {/* 2. Hero Section (Tightened, Intentional Spacing) */}
+      <motion.section
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: 'easeOut' }}
+        className="relative pt-12 pb-12 sm:pt-16 sm:pb-16 border-b border-[#1F2937]"
+      >
+        <div className="max-w-4xl mx-auto px-6 text-center flex flex-col items-center">
+          {/* Tag badge */}
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#141B2D] border border-[#1F2937] text-[#94A3B8] text-xs font-medium mb-3 sm:mb-4">
+            <Sparkles className="w-3.5 h-3.5 text-[#0D9488]" />
+            <span>Multi-Objective Non-Dominated Sorting (Deb O(MN²))</span>
           </div>
 
-          {/* Metric Highlight Counter Strip (Flat, Quiet Cards) */}
-          <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 text-left">
-            <div className="p-5 rounded-xl bg-[#141B2D] border border-[#1F2937] space-y-1">
-              <div className="text-2xl font-semibold text-[#E2E8F0] font-mono">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-[#E2E8F0] leading-tight max-w-3xl mx-auto mb-2.5 sm:mb-3">
+            Find where you fit in a city, not just where you rent.
+          </h1>
+
+          <p className="text-sm sm:text-base text-[#94A3B8] leading-relaxed max-w-2xl mx-auto mb-4 sm:mb-5">
+            NestFit scores neighborhoods across live commute, rent benchmarks, air quality, 
+            and healthcare density to return the mathematically non-dominated Pareto frontier — 
+            no arbitrary linear weights, no outlier concealment.
+          </p>
+
+          {/* City Autocomplete Dropdown with Rotating Typewriter Placeholder */}
+          <div className="w-full max-w-xl mx-auto mb-4 sm:mb-5">
+            <CityAutocomplete
+              currentCityId={selectedCity}
+              onSelectCity={(key) => handleLaunchApp(key)}
+              variant="hero"
+            />
+          </div>
+
+          {/* Hero Action Buttons */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <button
+              onClick={() => handleLaunchApp()}
+              className="w-full sm:w-auto px-6 py-2.5 rounded-lg text-sm font-medium text-white bg-[#0D9488] hover:bg-[#0F766E] transition-colors flex items-center justify-center gap-2 shadow-sm"
+            >
+              <span>Launch {selectedCity === 'bangalore' ? 'Bangalore' : 'Pune'} Workspace</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+
+            <a
+              href="#how-it-works"
+              className="w-full sm:w-auto px-5 py-2.5 rounded-lg text-sm font-medium text-[#94A3B8] hover:text-[#E2E8F0] bg-[#141B2D] hover:bg-[#1A2332] border border-[#1F2937] transition-colors flex items-center justify-center gap-2"
+            >
+              <span>Methodology Overview</span>
+            </a>
+          </div>
+        </div>
+      </motion.section>
+
+      {/* 3. Metric Strip (Dedicated Proof Section - Generous Padding, No Clipped Boundaries) */}
+      <motion.section
+        {...sectionMotionProps}
+        className="py-10 sm:py-12 bg-[#0E1526] border-b border-[#1F2937]"
+      >
+        <div className="max-w-5xl mx-auto px-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 text-left">
+            <div className="p-4 sm:p-5 rounded-xl bg-[#141B2D] border border-[#1F2937] space-y-1">
+              <div className="text-2xl sm:text-3xl font-semibold text-[#E2E8F0] font-mono">
                 <AnimatedCounter value={36} suffix="+" />
               </div>
               <h4 className="text-xs font-medium text-[#94A3B8]">Micro-Markets</h4>
               <p className="text-[11px] text-[#64748B]">Bangalore & Pune spatial sectors</p>
             </div>
 
-            <div className="p-5 rounded-xl bg-[#141B2D] border border-[#1F2937] space-y-1">
-              <div className="text-2xl font-semibold text-[#E2E8F0] font-mono">
+            <div className="p-4 sm:p-5 rounded-xl bg-[#141B2D] border border-[#1F2937] space-y-1">
+              <div className="text-2xl sm:text-3xl font-semibold text-[#E2E8F0] font-mono">
                 <AnimatedCounter value={13} suffix=" Hubs" />
               </div>
               <h4 className="text-xs font-medium text-[#94A3B8]">Major Tech Campuses</h4>
               <p className="text-[11px] text-[#64748B]">Ecospace, Manyata, Hinjawadi, ITPL</p>
             </div>
 
-            <div className="p-5 rounded-xl bg-[#141B2D] border border-[#1F2937] space-y-1">
-              <div className="text-2xl font-semibold text-[#E2E8F0] font-mono">
+            <div className="p-4 sm:p-5 rounded-xl bg-[#141B2D] border border-[#1F2937] space-y-1">
+              <div className="text-2xl sm:text-3xl font-semibold text-[#E2E8F0] font-mono">
                 <AnimatedCounter value={5} suffix=" Factors" />
               </div>
               <h4 className="text-xs font-medium text-[#94A3B8]">Objective Criteria</h4>
               <p className="text-[11px] text-[#64748B]">Rent, Commute, AQI, Healthcare, Retail</p>
             </div>
 
-            <div className="p-5 rounded-xl bg-[#141B2D] border border-[#1F2937] space-y-1">
-              <div className="text-2xl font-semibold text-[#E2E8F0] font-mono">
+            <div className="p-4 sm:p-5 rounded-xl bg-[#141B2D] border border-[#1F2937] space-y-1">
+              <div className="text-2xl sm:text-3xl font-semibold text-[#E2E8F0] font-mono">
                 0%
               </div>
               <h4 className="text-xs font-medium text-[#94A3B8]">Subjective Bias</h4>
@@ -163,11 +173,14 @@ export const LandingPage: React.FC = () => {
             </div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
-      {/* 3. Interactive Preview Showcase Section */}
-      <section className="py-20 max-w-5xl mx-auto px-6 border-b border-[#1F2937]">
-        <div className="text-center max-w-2xl mx-auto space-y-2 mb-12">
+      {/* 4. Interactive Preview Showcase Section */}
+      <motion.section
+        {...sectionMotionProps}
+        className="py-16 sm:py-20 max-w-5xl mx-auto px-6 border-b border-[#1F2937]"
+      >
+        <div className="text-center max-w-2xl mx-auto space-y-2 mb-10 sm:mb-12">
           <span className="text-xs font-medium text-[#94A3B8] uppercase tracking-wider">
             Spatial Intelligence Preview
           </span>
@@ -253,11 +266,15 @@ export const LandingPage: React.FC = () => {
             </div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
-      {/* 4. "How It Works" Section */}
-      <section id="how-it-works" className="py-20 max-w-5xl mx-auto px-6 border-b border-[#1F2937]">
-        <div className="text-center max-w-2xl mx-auto space-y-2 mb-12">
+      {/* 5. "How It Works" Section */}
+      <motion.section
+        id="how-it-works"
+        {...sectionMotionProps}
+        className="py-16 sm:py-20 max-w-5xl mx-auto px-6 border-b border-[#1F2937]"
+      >
+        <div className="text-center max-w-2xl mx-auto space-y-2 mb-10 sm:mb-12">
           <span className="text-xs font-medium text-[#94A3B8] uppercase tracking-wider">
             Optimization Workflow
           </span>
@@ -303,11 +320,15 @@ export const LandingPage: React.FC = () => {
             </p>
           </div>
         </div>
-      </section>
+      </motion.section>
 
-      {/* 5. Pareto Frontier vs. Weighted Scoring Comparison */}
-      <section id="pareto-vs-linear" className="py-20 max-w-5xl mx-auto px-6 border-b border-[#1F2937]">
-        <div className="text-center max-w-2xl mx-auto space-y-2 mb-12">
+      {/* 6. Pareto Frontier vs. Weighted Scoring Comparison */}
+      <motion.section
+        id="pareto-vs-linear"
+        {...sectionMotionProps}
+        className="py-16 sm:py-20 max-w-5xl mx-auto px-6 border-b border-[#1F2937]"
+      >
+        <div className="text-center max-w-2xl mx-auto space-y-2 mb-10 sm:mb-12">
           <span className="text-xs font-medium text-[#94A3B8] uppercase tracking-wider">
             Mathematical Foundations
           </span>
@@ -366,11 +387,15 @@ export const LandingPage: React.FC = () => {
             </ul>
           </div>
         </div>
-      </section>
+      </motion.section>
 
-      {/* 6. Multi-City Showcase Section */}
-      <section id="cities" className="py-20 max-w-5xl mx-auto px-6 border-b border-[#1F2937]">
-        <div className="text-center max-w-2xl mx-auto space-y-2 mb-12">
+      {/* 7. Multi-City Showcase Section */}
+      <motion.section
+        id="cities"
+        {...sectionMotionProps}
+        className="py-16 sm:py-20 max-w-5xl mx-auto px-6 border-b border-[#1F2937]"
+      >
+        <div className="text-center max-w-2xl mx-auto space-y-2 mb-10 sm:mb-12">
           <span className="text-xs font-medium text-[#94A3B8] uppercase tracking-wider">
             Supported Metros
           </span>
@@ -435,10 +460,14 @@ export const LandingPage: React.FC = () => {
             </button>
           </div>
         </div>
-      </section>
+      </motion.section>
 
-      {/* 7. Data Ethics & Transparent Limitations Section */}
-      <section id="data-ethics" className="py-20 max-w-5xl mx-auto px-6 border-b border-[#1F2937]">
+      {/* 8. Data Ethics & Transparent Limitations Section */}
+      <motion.section
+        id="data-ethics"
+        {...sectionMotionProps}
+        className="py-16 sm:py-20 max-w-5xl mx-auto px-6 border-b border-[#1F2937]"
+      >
         <div className="p-6 sm:p-8 rounded-xl bg-[#141B2D] border border-amber-900/30 space-y-4 shadow-card">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-[#1A2332] border border-[#1F2937] flex items-center justify-center text-[#D97706]">
@@ -467,9 +496,9 @@ export const LandingPage: React.FC = () => {
             </ul>
           </div>
         </div>
-      </section>
+      </motion.section>
 
-      {/* 8. Footer */}
+      {/* 9. Footer */}
       <footer className="mt-auto border-t border-[#1F2937] bg-[#0B1120] py-6 text-xs text-[#64748B]">
         <div className="max-w-[1720px] mx-auto px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
