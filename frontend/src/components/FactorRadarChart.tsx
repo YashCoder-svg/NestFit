@@ -48,8 +48,8 @@ export const FactorRadarChart: React.FC<FactorRadarChartProps> = ({
       <svg width={size} height={size} className="overflow-visible">
         <defs>
           <linearGradient id="radarGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#10b981" stopOpacity="0.5" />
-            <stop offset="100%" stopColor="#06b6d4" stopOpacity="0.4" />
+            <stop offset="0%" stopColor="#0D9488" stopOpacity="0.25" />
+            <stop offset="100%" stopColor="#0D9488" stopOpacity="0.08" />
           </linearGradient>
         </defs>
 
@@ -62,7 +62,7 @@ export const FactorRadarChart: React.FC<FactorRadarChartProps> = ({
               key={lvl}
               points={gridStr}
               fill="none"
-              stroke="#334155"
+              stroke="#1F2937"
               strokeWidth="0.8"
               strokeDasharray={lvl === 100 ? undefined : '2,2'}
             />
@@ -79,7 +79,7 @@ export const FactorRadarChart: React.FC<FactorRadarChartProps> = ({
               y1={center}
               x2={end.x}
               y2={end.y}
-              stroke="#334155"
+              stroke="#1F2937"
               strokeWidth="0.8"
             />
           );
@@ -89,8 +89,8 @@ export const FactorRadarChart: React.FC<FactorRadarChartProps> = ({
         <polygon
           points={polygonPointsStr}
           fill="url(#radarGradient)"
-          stroke="#10b981"
-          strokeWidth="2"
+          stroke="#0D9488"
+          strokeWidth="1.5"
         />
 
         {/* Data Point Dots */}
@@ -99,8 +99,8 @@ export const FactorRadarChart: React.FC<FactorRadarChartProps> = ({
             key={i}
             cx={p.x}
             cy={p.y}
-            r="3.5"
-            className="fill-emerald-400 stroke-slate-950 stroke-2"
+            r="3"
+            className="fill-[#0D9488] stroke-[#141B2D] stroke-2"
           />
         ))}
 
@@ -118,7 +118,7 @@ export const FactorRadarChart: React.FC<FactorRadarChartProps> = ({
                 x={labelCoord.x}
                 y={labelCoord.y + 3}
                 textAnchor={textAnchor}
-                className="text-[9px] font-semibold fill-slate-400 select-none"
+                className="text-[9px] font-medium fill-[#94A3B8] select-none"
               >
                 {a.label} ({Math.round(a.value)})
               </text>

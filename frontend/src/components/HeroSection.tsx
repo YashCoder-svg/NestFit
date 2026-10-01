@@ -19,10 +19,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   paretoCount
 }) => {
   return (
-    <div className="relative overflow-hidden pt-6 pb-4 border-b border-slate-800/60 bg-gradient-to-b from-slate-900/40 via-slate-950/20 to-transparent">
-      {/* Background ambient glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-32 bg-emerald-500/10 blur-[100px] pointer-events-none rounded-full" />
-
+    <div className="relative overflow-hidden pt-6 pb-4 border-b border-[#1F2937] bg-[#0B1120]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <motion.div
@@ -31,19 +28,19 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             transition={{ duration: 0.4 }}
             className="max-w-2xl"
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold mb-3">
+            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-[#0D9488]/10 border border-[#0D9488]/20 text-[#0D9488] text-xs font-medium mb-3">
               <Zap className="w-3.5 h-3.5" />
               <span>Multi-Factor Pareto Frontier Optimization</span>
             </div>
 
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-white leading-tight">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight text-[#E2E8F0] leading-tight">
               Find where you fit in Bangalore,{' '}
-              <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+              <span className="text-[#94A3B8]">
                 not just where you rent.
               </span>
             </h1>
 
-            <p className="mt-2 text-sm text-slate-400 max-w-xl">
+            <p className="mt-2 text-sm text-[#94A3B8] max-w-xl">
               NestFit scores Bangalore micro-markets across real-time commute, rental benchmarks, 
               air quality (AQI), and healthcare density to deliver the non-dominated Pareto frontier — 
               zero arbitrary weights.
@@ -54,26 +51,26 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="flex items-center gap-3 bg-slate-900/80 border border-slate-800 p-2.5 rounded-xl text-xs"
+            className="flex items-center gap-3 bg-[#141B2D] border border-[#1F2937] p-2.5 rounded-xl text-xs"
           >
-            <div className="px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-semibold flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+            <div className="px-2.5 py-1 rounded-md bg-[#0D9488]/10 border border-[#0D9488]/20 text-[#0D9488] font-medium flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#0D9488]" />
               <span>{paretoCount} Frontier Areas</span>
             </div>
             {executionTimeMs !== undefined && (
-              <div className="flex items-center gap-1 text-slate-400">
-                <Clock className="w-3.5 h-3.5 text-cyan-400" />
-                <span>Computed in <strong className="text-slate-200">{executionTimeMs}ms</strong></span>
+              <div className="flex items-center gap-1 text-[#94A3B8]">
+                <Clock className="w-3.5 h-3.5 text-[#64748B]" />
+                <span>Computed in <strong className="text-[#E2E8F0] font-medium">{executionTimeMs}ms</strong></span>
               </div>
             )}
           </motion.div>
         </div>
 
         {/* Workplace Quick Chips */}
-        <div className="mt-5 pt-3 border-t border-slate-800/40">
-          <div className="flex items-center gap-2 text-xs font-semibold text-slate-400 mb-2">
-            <Briefcase className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Select Bangalore Tech Park / Workplace Hub:</span>
+        <div className="mt-5 pt-3 border-t border-[#1F2937]">
+          <div className="flex items-center gap-2 text-xs font-medium text-[#94A3B8] uppercase tracking-wider mb-2">
+            <Briefcase className="w-3.5 h-3.5 text-[#64748B]" />
+            <span>Select Tech Park / Workplace Hub:</span>
           </div>
 
           <div className="flex flex-wrap gap-2">
@@ -85,11 +82,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   onClick={() => onSelectWorkplace(wp)}
                   className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                     isSelected
-                      ? 'bg-emerald-500 text-slate-950 font-bold shadow-md shadow-emerald-500/30 scale-[1.02]'
-                      : 'bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 hover:border-slate-700'
+                      ? 'bg-[#0D9488] text-[#E2E8F0] shadow-sm'
+                      : 'bg-[#141B2D] hover:bg-[#1A2332] text-[#94A3B8] hover:text-[#E2E8F0] border border-[#1F2937]'
                   }`}
                 >
-                  <MapPin className={`w-3 h-3 ${isSelected ? 'text-slate-950' : 'text-emerald-400'}`} />
+                  <MapPin className={`w-3 h-3 ${isSelected ? 'text-[#E2E8F0]' : 'text-[#64748B]'}`} />
                   <span>{wp.name}</span>
                 </button>
               );

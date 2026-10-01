@@ -8,32 +8,56 @@ export default {
   theme: {
     extend: {
       colors: {
-        brand: {
-          50: '#ecfdf5',
-          100: '#d1fae5',
-          500: '#10b981',
-          600: '#059669',
-          700: '#047857',
+        base: {
+          DEFAULT: '#0B1120',
+          dark: '#0B1120',
+          light: '#F8FAFC',
+        },
+        surface: {
+          DEFAULT: '#141B2D',
+          elevated: '#1A2332',
+          card: '#141B2D',
+          hover: '#192238',
+          border: '#1F2937',
+        },
+        primary: {
+          DEFAULT: '#0D9488',
+          hover: '#0F766E',
+          subtle: 'rgba(13, 148, 136, 0.12)',
+          border: 'rgba(13, 148, 136, 0.35)',
+        },
+        secondary: {
+          DEFAULT: '#64748B',
+          hover: '#475569',
         },
         pareto: {
-          1: '#10b981', // Emerald - True Pareto Optimal
-          2: '#06b6d4', // Cyan - Front 2
-          3: '#8b5cf6', // Violet - Front 3
-          excluded: '#64748b' // Slate
+          1: '#0D9488', // Muted Teal - Front 1
+          2: '#475569', // Slate Blue-Gray - Front 2
+          3: '#6B5B95', // Muted Violet-Gray - Front 3+
+          excluded: '#334155', // Dark Gray - Excluded
+        },
+        notice: {
+          DEFAULT: '#D97706',
+          border: '#78350F',
+          subtle: 'rgba(217, 119, 6, 0.08)',
+        },
+        text: {
+          primary: '#E2E8F0',
+          secondary: '#94A3B8',
+          disabled: '#64748B',
         }
       },
       fontFamily: {
-        sans: ['Plus Jakarta Sans', 'Inter', 'system-ui', 'sans-serif'],
+        sans: ['Inter', 'Manrope', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
       },
-      animation: {
-        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'float': 'float 6s ease-in-out infinite',
+      borderRadius: {
+        card: '12px',
+        panel: '12px',
       },
-      keyframes: {
-        float: {
-          '0%, 100%': { transform: 'translateY(0px)' },
-          '50%': { transform: 'translateY(-6px)' },
-        }
+      boxShadow: {
+        card: '0 1px 3px 0 rgba(0, 0, 0, 0.25), 0 1px 2px -1px rgba(0, 0, 0, 0.25)',
+        elevated: '0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.3)',
+        modal: '0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5)',
       }
     },
   },

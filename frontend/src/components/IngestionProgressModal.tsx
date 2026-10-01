@@ -28,27 +28,27 @@ export const IngestionProgressModal: React.FC<IngestionProgressModalProps> = ({
   const steps = [
     {
       title: 'Geocoding Urban Boundary',
-      desc: 'Nominatim geocoding to resolve spatial bounding box and administrative extent',
+      desc: 'Resolving spatial bounding box and administrative extent',
       icon: MapPin
     },
     {
       title: 'Locality & Suburb Discovery',
-      desc: 'Querying Overpass for administrative micro-markets with grid fallback',
+      desc: 'Querying Overpass for micro-markets with Voronoi grid fallback',
       icon: Building
     },
     {
       title: 'Healthcare & Grocery POIs Extraction',
-      desc: 'Batch spatial query for hospitals, clinics, and supermarkets across micro-markets',
+      desc: 'Spatial query for hospitals, clinics, and retail markets',
       icon: Sparkles
     },
     {
       title: 'Ambient Air Quality Verification',
-      desc: 'Scanning CPCB CAAQMS stations within 5km, falling back to OpenWeatherMap modeled AQI',
+      desc: 'Scanning CPCB CAAQMS stations, falling back to OWM modeled AQI',
       icon: Wind
     },
     {
-      title: 'Rent Benchmarking & Pareto Formulation',
-      desc: 'Cross-referencing verified surveys (no fabricated rent) & compiling objective vectors',
+      title: 'Pareto Formulation & Objective Vectors',
+      desc: 'Compiling non-dominated sorting candidate sets (zero fabricated rent)',
       icon: ShieldCheck
     }
   ];
@@ -85,52 +85,49 @@ export const IngestionProgressModal: React.FC<IngestionProgressModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0B1120]/80 backdrop-blur-sm">
       <motion.div
-        initial={{ opacity: 0, scale: 0.92, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.95 }}
-        transition={{ duration: 0.3 }}
-        className="w-full max-w-xl glass-panel rounded-3xl p-6 sm:p-8 border border-emerald-500/40 shadow-2xl shadow-emerald-500/10 bg-slate-900/95"
+        initial={{ opacity: 0, scale: 0.96 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.96 }}
+        className="w-full max-w-lg bg-[#1A2332] rounded-xl p-6 sm:p-7 border border-[#1F2937] shadow-modal space-y-5"
       >
         {/* Header */}
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-500/30 animate-pulse">
-            <Compass className="w-6 h-6 text-slate-950 font-bold" />
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-lg bg-[#141B2D] border border-[#1F2937] flex items-center justify-center text-[#0D9488]">
+            <Compass className="w-5 h-5" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-xl font-extrabold text-white tracking-tight">
-                Analyzing {cityName}...
+              <h2 className="text-base font-semibold text-[#E2E8F0]">
+                Ingesting {cityName}...
               </h2>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 animate-pulse">
-                Live Ingestion
+              <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-[#0D9488]/15 text-[#0D9488] border border-[#0D9488]/30">
+                Live Pipeline
               </span>
             </div>
-            <p className="text-xs text-slate-400 mt-0.5">
-              Building on-demand location intelligence • Elapsed: {elapsed}s
+            <p className="text-xs text-[#64748B]">
+              Compiling location intelligence dataset • {elapsed}s elapsed
             </p>
           </div>
         </div>
 
         {/* Progress Bar */}
-        <div className="mt-6 space-y-2">
+        <div className="space-y-1.5">
           <div className="flex items-center justify-between text-xs">
-            <span className="text-slate-400 font-medium">Pipeline Progress</span>
-            <span className="text-emerald-400 font-bold">{progress}%</span>
+            <span className="text-[#94A3B8]">Pipeline Status</span>
+            <span className="text-[#0D9488] font-mono font-medium">{progress}%</span>
           </div>
-          <div className="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
-            <motion.div
-              className="h-full bg-gradient-to-r from-emerald-500 via-teal-400 to-cyan-400 rounded-full"
-              initial={{ width: '15%' }}
-              animate={{ width: `${progress}%` }}
-              transition={{ duration: 0.5, ease: 'easeOut' }}
+          <div className="w-full h-1.5 rounded-full bg-[#141B2D] border border-[#1F2937] overflow-hidden">
+            <div
+              className="h-full bg-[#0D9488] rounded-full transition-all duration-300"
+              style={{ width: `${progress}%` }}
             />
           </div>
         </div>
 
         {/* Stepper Checklist */}
-        <div className="mt-6 space-y-3">
+        <div className="space-y-2">
           {steps.map((step, idx) => {
             const Icon = step.icon;
             const isCompleted = idx < currentStep;
@@ -139,59 +136,50 @@ export const IngestionProgressModal: React.FC<IngestionProgressModalProps> = ({
             return (
               <div
                 key={idx}
-                className={`p-3 rounded-2xl border transition-all flex items-start gap-3 ${
+                className={`p-2.5 rounded-lg border transition-colors flex items-start gap-2.5 ${
                   isCurrent
-                    ? 'bg-slate-800/80 border-emerald-500/40 shadow-sm'
+                    ? 'bg-[#141B2D] border-[#0D9488]/40'
                     : isCompleted
-                    ? 'bg-slate-950/40 border-slate-800/60 opacity-80'
-                    : 'bg-slate-950/20 border-slate-900 opacity-40'
+                    ? 'bg-[#141B2D]/50 border-[#1F2937] opacity-80'
+                    : 'bg-[#141B2D]/20 border-[#1F2937]/50 opacity-40'
                 }`}
               >
                 <div className="mt-0.5">
                   {isCompleted ? (
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#0D9488]" />
                   ) : isCurrent ? (
-                    <Loader2 className="w-4 h-4 text-emerald-400 animate-spin" />
+                    <Loader2 className="w-3.5 h-3.5 text-[#0D9488] animate-spin" />
                   ) : (
-                    <Icon className="w-4 h-4 text-slate-500" />
+                    <Icon className="w-3.5 h-3.5 text-[#64748B]" />
                   )}
                 </div>
 
                 <div className="flex-1">
                   <div className="flex items-center justify-between">
-                    <span
-                      className={`text-xs font-bold ${
-                        isCurrent
-                          ? 'text-white'
-                          : isCompleted
-                          ? 'text-emerald-300'
-                          : 'text-slate-400'
-                      }`}
-                    >
+                    <span className="text-xs font-medium text-[#E2E8F0]">
                       {step.title}
                     </span>
                     {isCompleted && (
-                      <span className="text-[10px] text-emerald-400 font-semibold">Done</span>
+                      <span className="text-[10px] text-[#0D9488] font-medium">Done</span>
                     )}
                     {isCurrent && (
-                      <span className="text-[10px] text-amber-300 font-semibold animate-pulse">
-                        In progress...
+                      <span className="text-[10px] text-[#D97706] font-medium">
+                        Processing...
                       </span>
                     )}
                   </div>
-                  <p className="text-[11px] text-slate-400 mt-0.5">{step.desc}</p>
+                  <p className="text-[11px] text-[#64748B] mt-0.5">{step.desc}</p>
                 </div>
               </div>
             );
           })}
         </div>
 
-        {/* Fair-use Rate Limiting Notice */}
-        <div className="mt-6 p-3 rounded-2xl bg-slate-950/60 border border-slate-800 flex items-center gap-2.5 text-[11px] text-slate-400">
-          <Info className="w-4 h-4 text-cyan-400 shrink-0" />
+        {/* Notice */}
+        <div className="p-3 rounded-lg bg-[#141B2D] border border-[#1F2937] flex items-center gap-2 text-[11px] text-[#64748B]">
+          <Info className="w-3.5 h-3.5 text-[#94A3B8] shrink-0" />
           <span>
-            Requests are rate-limited (&ge;1 req/sec) to respect OpenStreetMap Nominatim and Overpass
-            fair-use policies. Ingested cities are cached in MongoDB for 7 days.
+            External APIs are rate-limited to respect fair-use policies. Ingested cities are cached for 7 days.
           </span>
         </div>
       </motion.div>
